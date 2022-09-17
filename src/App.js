@@ -7,6 +7,7 @@ export default function App() {
   const [password, setPassword] = useState("");
 
   const [users, setUsers] = useState([]);
+  const [selectedUsers, setSelectedUsers] = useState([]);
   // Make a request for a user with a given ID
 
   useEffect(() => {
@@ -108,9 +109,29 @@ export default function App() {
     }
   };
 
+  const toggleSelection = (e) => {
+    console.log(e.target.checked);
+    console.log(e.target.value);
+
+    let isChecked = e.target.checked;
+    if (isChecked) {
+      // add value to selectedSelection
+      // setTheArray(oldArray => [...oldArray, newElement]);
+      setSelectedUsers((selectedUsers) => [...selectedUsers, e.target.value]);
+    } else {
+      setSelectedUsers(selectedUsers.filter((item) => item !== e.target.value));
+    }
+  };
+
+  const doWithList = (e) => {
+    e.preventDefault();
+    alert(selectedUsers);
+  };
+
   return (
     <div>
       <h1>Utilisateurs</h1>
+
       <div>
         <form onSubmit={handleSubmit}>
           <div>
@@ -137,6 +158,14 @@ export default function App() {
           </div>
         </form>
       </div>
+
+      <div>
+        {selectedUsers.length > 0 && (
+          <div>
+            <button onClick={doWithList}>Supprimer la selection</button>
+          </div>
+        )}
+      </div>
       <table>
         <tr>
           <th>ID</th>
@@ -145,7 +174,13 @@ export default function App() {
         </tr>
         {users.map((user) => (
           <tr key={user._id}>
-            <td>{user._id}</td>
+            <td>
+              <input
+                type="checkbox"
+                value={user._id}
+                onChange={toggleSelection}
+              />
+            </td>
             <td>{user.username}</td>
             <td>
               <button onClick={(e) => handleEdit(e, user._id)}>Modifier</button>
