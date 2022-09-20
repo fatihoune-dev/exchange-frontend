@@ -3,6 +3,8 @@ import axios from "axios";
 
 export default function App() {
   const [id, setId] = useState(null);
+  const [page, setPage] = useState(1);
+  const [pages, setPages] = useState(1);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -11,16 +13,23 @@ export default function App() {
   // Make a request for a user with a given ID
 
   useEffect(() => {
-    getUsers();
-  }, []);
+    getUsers(page, null);
+  }, [page]);
 
-  const getUsers = () => {
+  const getUsers = (page, query) => {
     axios
-      .get("http://localhost:5000/users/list")
+      .get(
+        "http://localhost:5000/users/paginate?page=" +
+          page +
+          "&keyword=" +
+          query
+      )
       .then(function (response) {
         // handle success
         console.log(response);
-        setUsers(response.data);
+        setUsers(response.data.users);
+        setPage(parseInt(response.data.page));
+        setPages(parseInt(response.data.pages));
       })
       .catch(function (error) {
         // handle error
@@ -128,6 +137,10 @@ export default function App() {
     alert(selectedUsers);
   };
 
+  const handleSearch = (search) => {
+    getUsers(page, search);
+  };
+
   return (
     <div>
       <h1>Utilisateurs</h1>
@@ -166,13 +179,21 @@ export default function App() {
           </div>
         )}
       </div>
+      <div>
+        <input
+          onChange={(e) => handleSearch(e.target.value)}
+          type="text"
+          placeholder="Rechercher..."
+        />
+        <button>Rechercher</button>
+      </div>
       <table>
         <tr>
           <th>ID</th>
           <th>Nom Utilisateur</th>
           <th>Actions</th>
         </tr>
-        {users.map((user) => (
+        {users?.map((user) => (
           <tr key={user._id}>
             <td>
               <input
@@ -191,6 +212,16 @@ export default function App() {
           </tr>
         ))}
       </table>
+      {/* Pagination */}
+      {pages && (
+        <div>
+          {[...Array(pages)].map((p, i) => (
+            <button key={i} onClick={(e) => setPage(i + 1)}>
+              {i + 1}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
