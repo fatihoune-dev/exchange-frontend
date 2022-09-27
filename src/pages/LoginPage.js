@@ -19,6 +19,7 @@ export default function LoginPage() {
         console.log(response);
         setUsername("");
         setPassword("");
+        localStorage.setItem("apps", JSON.stringify(response.data));
         navigate("/");
       })
       .catch(function (error) {
@@ -27,9 +28,11 @@ export default function LoginPage() {
         alert(error.message);
       });
   };
+
   return (
-    <div>
+    <div className="auth">
       <form onSubmit={handleSubmit}>
+        <h1>Connectez vous</h1>
         <div>
           <label>Nom utilisateur</label>
           <input

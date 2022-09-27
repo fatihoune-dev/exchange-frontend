@@ -1,0 +1,33 @@
+.auth {
+  width: 100%;
+  height: 100vh;
+
+  form {
+    width: 300px;
+    margin: 50px auto;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 2em;
+    box-sizing: border-box;
+
+    h1 {
+      text-align: center;
+    }
+
+    div {
+      margin: 10px 0;
+      display: flex;
+      flex-direction: column;
+      input {
+        padding: 7px 5px;
+      }
+
+      button {
+        width: 100%;
+        padding: 7px 5px;
+        background-color: green;
+        color: #fff;
+      }
+    }
+  }
+}

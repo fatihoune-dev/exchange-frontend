@@ -1,0 +1,22 @@
+// define app layout
+#app {
+  display: flex;
+}
+
+.app__Nav {
+  width: 200px;
+  height: 100vh;
+  background-color: aqua;
+
+  .app__NavMenu {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.app__Main {
+  flex: 1;
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+}
